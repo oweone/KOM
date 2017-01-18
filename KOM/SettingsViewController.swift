@@ -21,6 +21,9 @@ class SettingsViewController: UIViewController {
     @IBOutlet weak var timeStepper: UIStepper!
     @IBOutlet weak var timeStepperLabel: UILabel!
     
+    let MyTasksIdentifier = "MyTasks"
+    let MyAnswersIdentifier = "MyAnswers"
+    
     
     var buttonTitle: String!
     let logIn = "Log In"
@@ -91,14 +94,21 @@ class SettingsViewController: UIViewController {
         }
     }
     
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if segue.identifier == identifier {
-//            if let locationsTableViewController = segue.destination as? LocationsTableViewController {
-//                //to be implemented
-//                
-//            }
-//        }
-//    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == MyTasksIdentifier {
+            if let destination = segue.destination as? MyTasksViewController {
+                destination.filterMyAnswers = false
+                destination.filterMyTasks = true
+            }
+        }
+        if segue.identifier == MyAnswersIdentifier {
+            if let destination = segue.destination as? MyTasksViewController {
+                destination.filterMyAnswers = true
+                destination.filterMyTasks = false
+            }
+        }
+        
+    }
 
     
     

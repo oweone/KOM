@@ -32,6 +32,7 @@
 		576747C11E12CC4C00248EF0 /* TaskTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 576747C01E12CC4C00248EF0 /* TaskTableViewCell.swift */; };
 		576747C31E12D24900248EF0 /* TaskDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 576747C21E12D24900248EF0 /* TaskDetailViewController.swift */; };
 		57692DCE1E1C0CC900AEE1C8 /* MapForDisplayingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57692DCD1E1C0CC900AEE1C8 /* MapForDisplayingViewController.swift */; };
+		5773421A1E2FA97300DF3382 /* MyTasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577342191E2FA97300DF3382 /* MyTasksViewController.swift */; };
 		577DF8C91E16DCA300372D8F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 577DF8C81E16DCA300372D8F /* GoogleService-Info.plist */; };
 		5796DF9D1E140EAE00FA0BBC /* MapsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5796DF9C1E140EAE00FA0BBC /* MapsViewController.swift */; };
 		D0B5463E0C2826FCFF6B03A6 /* Pods_KOM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D6217FA89F42EEC1E675073 /* Pods_KOM.framework */; };
@@ -80,6 +81,7 @@
 		576747C01E12CC4C00248EF0 /* TaskTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskTableViewCell.swift; sourceTree = "<group>"; };
 		576747C21E12D24900248EF0 /* TaskDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskDetailViewController.swift; sourceTree = "<group>"; };
 		57692DCD1E1C0CC900AEE1C8 /* MapForDisplayingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapForDisplayingViewController.swift; sourceTree = "<group>"; };
+		577342191E2FA97300DF3382 /* MyTasksViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyTasksViewController.swift; sourceTree = "<group>"; };
 		577DF8C81E16DCA300372D8F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5796DF9C1E140EAE00FA0BBC /* MapsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapsViewController.swift; sourceTree = "<group>"; };
 		6D6217FA89F42EEC1E675073 /* Pods_KOM.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KOM.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -188,6 +190,7 @@
 				5761EDF31E17F0690090CB15 /* TaskCompositionViewController.swift */,
 				5761EDFF1E196ACA0090CB15 /* SettingsViewController.swift */,
 				5765928D1E1A8B3C003BB3C1 /* UserLocationsViewController.swift */,
+				577342191E2FA97300DF3382 /* MyTasksViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -450,6 +453,7 @@
 				576747C11E12CC4C00248EF0 /* TaskTableViewCell.swift in Sources */,
 				5767479D1E12C42000248EF0 /* AppDelegate.swift in Sources */,
 				57692DCE1E1C0CC900AEE1C8 /* MapForDisplayingViewController.swift in Sources */,
+				5773421A1E2FA97300DF3382 /* MyTasksViewController.swift in Sources */,
 				576747BF1E12CBD600248EF0 /* Task.swift in Sources */,
 				57170DD91E1307E5009E5D7A /* TaskDetailTableViewCell.swift in Sources */,
 				5761EE071E19BCBB0090CB15 /* SignUpViewController.swift in Sources */,

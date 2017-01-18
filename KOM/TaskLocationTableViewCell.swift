@@ -28,8 +28,6 @@ class TaskLocationTableViewCell: UITableViewCell {
             
             self.textLabel?.text = locationString
         })
-        
-        
     }
     
 }

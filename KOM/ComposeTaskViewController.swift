@@ -41,7 +41,7 @@ class ComposeTaskViewController: UIViewController {
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .short
         dateFormatter.timeStyle = .short
-        dateFormatter.locale = Locale(identifier: "en_US")
+//        dateFormatter.locale = Locale(identifier: "en_US")
         let time = dateFormatter.string(from: Date())
         
         let summary = textView.text

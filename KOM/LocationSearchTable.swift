@@ -41,6 +41,7 @@ class LocationSearchTable: UITableViewController {
         let selectedItem = matchingItems[indexPath.row].placemark
         cell.textLabel?.text = selectedItem.name
         cell.detailTextLabel?.text = parseAddress(selectedItem: selectedItem)
+
         return cell
     }
     

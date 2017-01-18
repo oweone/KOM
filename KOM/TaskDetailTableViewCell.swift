@@ -74,16 +74,21 @@ class TaskDetailTableViewCell: UITableViewCell, MKMapViewDelegate {
     
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        let identifier = "pin"
-        var view: MKPinAnnotationView
-        if let dequeueView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKPinAnnotationView {
-            dequeueView.annotation = annotation
-            view = dequeueView
+        if annotation is MKUserLocation {
+            return nil
         }else{
-            view = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
-            view.canShowCallout = false
+            let identifier = "pin"
+            var view: MKPinAnnotationView
+            if let dequeueView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKPinAnnotationView {
+                dequeueView.annotation = annotation
+                view = dequeueView
+            }else{
+                view = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+                view.canShowCallout = false
+            }
+            return view
         }
-        return view
+        
     }
     
 

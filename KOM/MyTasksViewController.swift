@@ -1,44 +1,85 @@
 //
-//  TasksViewController.swift
+//  MyTasksViewController.swift
 //  KOM
 //
-//  Created by GuoGongbin on 12/27/16.
-//  Copyright © 2016 GuoGongbin. All rights reserved.
+//  Created by GuoGongbin on 1/18/17.
+//  Copyright © 2017 GuoGongbin. All rights reserved.
 //
 
 import UIKit
 import MapKit
 
-class TasksViewController: UIViewController {
+class MyTasksViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
     
     var tasks = [Task]()
     var timeOrderOriginal: TimeOrder!
     var distanceOrderOriginal: DistanceOrder!
-    var storedTasks = [Task]()
-    var ShouldFilterMyTasks = false
-    var ShouldFilterMyAnswers = false
+    var filterMyTasks = false
+    var filterMyAnswers = false
     
     lazy var refreshControl: UIRefreshControl = {
-       let refreshControl = UIRefreshControl()
+        let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(TasksViewController.updateDataSource(refreshControl:)), for: .valueChanged)
         return refreshControl
     }()
     
-//    var refreshControl: UIRefreshControl!
+    
+//    let childAnswerReference = answerReference.child(task.taskKey!)
+//    task.answers = []
+//    //        print("task.taskKey: \(task.taskKey)")
+//    
+//    childAnswerReference.observe(.value, with: { snapshot in
+//    if let value = snapshot.value as? NSArray {
+//    let answers = value.map { Answer(value: $0 as! [String : Any]) }
+//    self.task.answers = answers
+//    }
+//    self.tableView.reloadData()
+//    })
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         self.tableView.addSubview(refreshControl)
-        
+        print("filterMyTasks:\(filterMyTasks), filterMyAnswers:\(filterMyAnswers)")
         // Do any additional setup after loading the view.
         tasksReference.observe(.value, with: { snapshot in
             self.tasks.removeAll(keepingCapacity: false)
             for item in snapshot.children {
                 let task = Task(snapshot: item as! FIRDataSnapshot)
-                self.tasks.append(task)
+                if self.filterMyTasks {
+                    if task.person.name == user.name {
+                        self.tasks.append(task)
+                    }
+                }else{
+                    if self.filterMyAnswers {
+                        let childAnswerReference = answerReference.child(task.taskKey!)
+                        task.answers = []
+                        childAnswerReference.observe(.value, with: { snapshot in
+                            if let value = snapshot.value as? NSArray {
+                                let answers = value.map { Answer(value: $0 as! [String: Any]) }
+                                task.answers = answers
+                                
+                                print("something happened here")
+                                if task.answers != nil {
+                                    print("number of answers:\(task.answers!.count)")
+                                    for answer in task.answers! {
+                                        print("answer.person.name:\(answer.person.name), user.name: \(user.name)")
+                                        if answer.person.name == user.name {
+                                            
+                                            self.tasks.append(task)
+                                            print("tasks.count: \(self.tasks.count)")
+                                            break
+                                        }
+                                    }
+                                }
+                                
+                            }
+                            self.tableView.reloadData()
+                        })
+                    }
+                }
             }
             self.tableView.reloadData()
         })
@@ -49,36 +90,19 @@ class TasksViewController: UIViewController {
         tableView.estimatedRowHeight = tableView.rowHeight
         tableView.rowHeight = UITableViewAutomaticDimension
         
-        // set this two variables from Settings
-//        timeOrderOriginal = timeOrder
-//        distanceOrderOriginal = distanceOrder
-        
     }
-    
-    // pull down to triger the filter action, because the tableView needs to connect to the server to get the snapshot. It is done in this way because of scalability and performance.
-    // Reordering the data in the tableView doesn't need to reconnect to the server, so, the two actions can be put in the viewWillAppear method.
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        // filter tasks first, if not, result is not correct
-        //        if dayFilter > 0 {
-        //            filterTasks(filter: dayFilter)
-        //            tableView.reloadData()
-        //        }
-        
-        
+
         if timeOrder != nil {
             sortTasks(timeDescriptor: timeOrder!)
         }
         
-        //testing userCurrentLocation
-        //        userCurrentLocation = CLLocation(latitude: 50.9726913, longitude: 50.9726913)
         if userCurrentLocation != nil {
             if distanceOrder != nil {
                 sortTasks(distanceDescriptor: distanceOrder!)
             }
         }
-        
         tableView.reloadData()
     }
     
@@ -88,7 +112,9 @@ class TasksViewController: UIViewController {
             self.tasks.removeAll(keepingCapacity: false)
             for item in snapshot.children {
                 let task = Task(snapshot: item as! FIRDataSnapshot)
-                self.tasks.append(task)
+                if task.person.name == user.name {
+                    self.tasks.append(task)
+                }
             }
             
             if dayFilter > 0 {
@@ -110,8 +136,6 @@ class TasksViewController: UIViewController {
             
         })
     }
-
-    
     func sortTasks(timeDescriptor: TimeOrder) {
         
         //currently the locale is set to en_US
@@ -125,7 +149,7 @@ class TasksViewController: UIViewController {
             
             let date1 = dateFormatter.date(from: task1.time)
             let date2 = dateFormatter.date(from: task2.time)
-//            print("date1: \(date1), date2: \(date2)")
+            //            print("date1: \(date1), date2: \(date2)")
             
             if date1 != nil && date2 != nil {
                 let result = date1!.compare(date2!)
@@ -140,7 +164,7 @@ class TasksViewController: UIViewController {
             }else{
                 return false
             }
-
+            
         })
         if timeDescriptor == .ascending {
             tasks = sortedTasks
@@ -148,9 +172,6 @@ class TasksViewController: UIViewController {
             tasks = sortedTasks.reversed()
         }
     }
-    
-    // compare each of the  locations in array tasks to the userCurrentLocation
-    //sort the tasks array in distance Ascending order
     func sortTasks(distanceDescriptor: DistanceOrder) {
         let sortedTasks = tasks.sorted(by: { (task1, task2) -> Bool in
             
@@ -172,7 +193,6 @@ class TasksViewController: UIViewController {
             tasks = sortedTasks.reversed()
         }
     }
-
     func filterTasks(filter: Double) {
         
         let dateFormatter = DateFormatter()
@@ -203,29 +223,18 @@ class TasksViewController: UIViewController {
         tasks = filteredTasks
     }
     
-    func filterMyTasks() {
-        if ShouldFilterMyTasks {
-            let filteredTasks = tasks.filter( { task -> Bool in
-                if task.person.name == user.name {
-                    return true
-                }else{
-                    return false
-                }
-            })
-            tasks = filteredTasks
-        }
-        ShouldFilterMyTasks = false
-    }
-    
+    // MARK: - Navigation
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "ShowTaskDetail", let taskDetailViewController = segue.destination as? TaskDetailViewController {
             let cell = sender as! TaskTableViewCell
             taskDetailViewController.task = cell.task
         }
     }
+
 }
 
-extension TasksViewController: UITableViewDataSource, UITableViewDelegate {
+extension MyTasksViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -241,5 +250,3 @@ extension TasksViewController: UITableViewDataSource, UITableViewDelegate {
         return cell
     }
 }
-
-
